@@ -292,7 +292,7 @@
     }
 
     .worksheet-list li {
-      margin-bottom: 0.9rem; /* extra vertical space between problems */
+      margin-bottom: 0.9rem;
     }
 
     .worksheet-answer {
@@ -980,13 +980,19 @@
       function () {
         const a = randInt(1, 4);
         const expr = `2y(y + ${a}) + 6y(y - 1)`;
-        const part1 = addPolys(makeMono(2, { y: 2 }), makeMono(2 * a, { y: 1 }));
-        const part2 = addPolys(makeMono(6, { y: 2 }), makeConst(-6));
-        const poly = addPolys(part1, part2);
+        const part1 = addPolys(
+          makeMono(2, { y: 2 }),
+          makeMono(2 * a, { y: 1 })
+        ); // 2y² + 2ay
+        const part2 = addPolys(
+          makeMono(6, { y: 2 }),
+          makeMono(-6, { y: 1 })
+        ); // 6y² - 6y
+        const poly = addPolys(part1, part2); // 8y² + (2a - 6)y
         const steps =
           `${expr}\n` +
-          `= 2y² + ${2 * a}y + 6y² - 6\n` +
-          `= 8y² + ${2 * a}y - 6`;
+          `= 2y² + ${2 * a}y + 6y² - 6y\n` +
+          `= 8y² + ${2 * a - 6}y`;
         return { expr, poly, steps, difficulty: "medium" };
       }
     ];
@@ -1550,7 +1556,7 @@
         const same =
           Object.keys(userPoly).length === Object.keys(p.poly).length &&
           Object.keys(userPoly).every(
-            (k) => Object.prototype.hasOwnProperty.call(p.poly, k) && userPoly[k] === p.poly[k]
+            (k) => Object.prototype.hasOwnProperty.call(p.poly, k) && userPoly[k] === p[k]
           );
         return same;
       });
